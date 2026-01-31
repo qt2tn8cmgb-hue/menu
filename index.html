@@ -2,26 +2,16 @@
 <html lang="ru">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>OTTO | Детское меню</title>
+    <title>OTTO | Çocuk Menü</title>
 
     <style>
-        /* ========== ОСНОВА ========== */
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f2efe9;
         }
-
-        /* ========== ЭКРАНЫ ========== */
 
         .screen {
             display: none;
@@ -33,72 +23,59 @@
             display: block;
         }
 
-        /* ========== КНОПКИ ========== */
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #2f4f4f;
+            color: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+        }
 
         .btn {
             width: 100%;
-            padding: 16px;
-            font-size: 17px;
-            font-weight: bold;
-            border-radius: 16px;
+            padding: 14px;
+            margin-top: 14px;
             border: none;
-            background: #2f4f4f;
-            color: #ffffff;
-        }
-
-        /* ========== СТАРТ ========== */
-
-        .center {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .start-box {
-            background: #2f4f4f;
-            color: #ffffff;
-            padding: 32px;
-            border-radius: 24px;
-            text-align: center;
-            max-width: 360px;
-            width: 100%;
-        }
-
-        /* ========== МЕНЮ ========== */
-
-        .menu-title {
-            text-align: center;
-            font-size: 20px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 16px;
+            background: #d4a373;
+            color: #000;
         }
 
         .cart-bar {
             background: #2f4f4f;
-            color: #ffffff;
-            padding: 14px 18px;
-            border-radius: 16px;
+            color: #fff;
+            padding: 14px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
+            font-weight: bold;
         }
 
-        .cart-count {
+        .badge {
             background: red;
             padding: 4px 10px;
             border-radius: 50%;
+            font-size: 14px;
         }
 
-        /* ========== БЛЮДА ========== */
-
         .item {
-            background: #ffffff;
-            border-radius: 18px;
-            margin-bottom: 18px;
+            background: #fff;
+            border-radius: 16px;
+            margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .item img {
@@ -108,29 +85,28 @@
         }
 
         .info {
-            padding: 14px;
+            padding: 12px;
         }
 
         .name {
             font-weight: bold;
-            font-size: 16px;
         }
 
-        .sub {
+        .tr {
             font-size: 13px;
-            color: #777777;
+            color: #666;
         }
 
         .price {
             font-weight: bold;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .qty {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .qty button {
@@ -139,257 +115,138 @@
             border-radius: 50%;
             border: none;
             font-size: 20px;
-            background: #dddddd;
         }
 
-        /* ========== КОРЗИНА ========== */
-
         .cart-item {
-            background: #ffffff;
-            padding: 14px;
-            border-radius: 14px;
-            margin-bottom: 12px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
         }
 
         .total {
-            text-align: right;
             font-weight: bold;
             margin: 16px 0;
+            text-align: right;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ========== СТАРТ ========== -->
-
-    <div id="start" class="screen active">
-        <div class="center">
-            <div class="start-box">
-                <h1>OTTO</h1>
-                <p>Çocuk Menü</p>
-                <button class="btn" onclick="showScreen('menu')">
-                    Перейти в меню
-                </button>
-            </div>
+    <!-- START -->
+    <div id="start" class="screen active center">
+        <div class="card">
+            <h1>OTTO</h1>
+            <p>Çocuk Menü</p>
+            <button class="btn" onclick="goTo('menu')">Перейти в меню</button>
         </div>
     </div>
 
-    <!-- ========== МЕНЮ ========== -->
-
+    <!-- MENU -->
     <div id="menu" class="screen">
 
-        <div class="menu-title">ДЕТСКОЕ МЕНЮ</div>
-
-        <div class="cart-bar" onclick="openCart()">
+        <div class="cart-bar" onclick="goTo('cart')">
             🛒 Корзина
-            <span id="cartCount" class="cart-count">0</span>
+            <span id="cartCount" class="badge">0</span>
         </div>
 
-        <!-- MINI BURGER -->
-        <div class="item">
-            <img src="images/mini-burger.jpg">
-            <div class="info">
-                <div class="name">Мини бургеры</div>
-                <div class="sub">Mini Burger</div>
-                <div class="price">99 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('mini_burger', 99000, -1)">−</button>
-                    <span id="mini_burger">0</span>
-                    <button onclick="changeQty('mini_burger', 99000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- TANTUNI -->
-        <div class="item">
-            <img src="images/tantuni.jpg">
-            <div class="info">
-                <div class="name">Булочка с телятиной</div>
-                <div class="sub">Tantuni</div>
-                <div class="price">120 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('tantuni', 120000, -1)">−</button>
-                    <span id="tantuni">0</span>
-                    <button onclick="changeQty('tantuni', 120000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- HOT DOG -->
-        <div class="item">
-            <img src="images/hotdog.jpg">
-            <div class="info">
-                <div class="name">Хот-дог</div>
-                <div class="sub">Hot Dog</div>
-                <div class="price">99 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('hot_dog', 99000, -1)">−</button>
-                    <span id="hot_dog">0</span>
-                    <button onclick="changeQty('hot_dog', 99000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- IZGARA KOFTE -->
-        <div class="item">
-            <img src="images/kofte.jpg">
-            <div class="info">
-                <div class="name">Мясные котлеты</div>
-                <div class="sub">Izgara Köfte</div>
-                <div class="price">65 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('izgara_kofte', 65000, -1)">−</button>
-                    <span id="izgara_kofte">0</span>
-                    <button onclick="changeQty('izgara_kofte', 65000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- KASARLI KOFTE -->
-        <div class="item">
-            <img src="images/kasarli-kofte.jpg">
-            <div class="info">
-                <div class="name">Сырные котлеты</div>
-                <div class="sub">Kaşarlı Köfte</div>
-                <div class="price">65 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('kasarli_kofte', 65000, -1)">−</button>
-                    <span id="kasarli_kofte">0</span>
-                    <button onclick="changeQty('kasarli_kofte', 65000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- BONFILE -->
-        <div class="item">
-            <img src="images/bonfile.jpg">
-            <div class="info">
-                <div class="name">Булочка с вырезкой</div>
-                <div class="sub">Ekmek Arası Bonfile</div>
-                <div class="price">195 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('bonfile', 195000, -1)">−</button>
-                    <span id="bonfile">0</span>
-                    <button onclick="changeQty('bonfile', 195000, 1)">+</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ET DONER -->
-        <div class="item">
-            <img src="images/doner.jpg">
-            <div class="info">
-                <div class="name">Булочка с донером</div>
-                <div class="sub">Ekmek Arası Et Döner</div>
-                <div class="price">102 000 сум</div>
-                <div class="qty">
-                    <button onclick="changeQty('et_doner', 102000, -1)">−</button>
-                    <span id="et_doner">0</span>
-                    <button onclick="changeQty('et_doner', 102000, 1)">+</button>
-                </div>
-            </div>
-        </div>
+        <!-- ITEMS -->
+        <div id="items"></div>
 
     </div>
 
-    <!-- ========== КОРЗИНА ========== -->
-
+    <!-- CART -->
     <div id="cart" class="screen">
         <h3>Корзина</h3>
-
         <div id="cartList"></div>
-        <div id="cartTotal" class="total"></div>
-
+        <div class="total" id="cartTotal"></div>
         <button class="btn" onclick="sendOrder()">Заказать</button>
-        <br><br>
-        <button class="btn" onclick="showScreen('menu')">Назад</button>
+        <button class="btn" onclick="goTo('menu')">Назад</button>
     </div>
 
-    <!-- ========== THANK YOU ========== -->
-    <div id="thanks" class="screen">
-        <div class="center">
-            <div class="start-box">
-                <h2>Спасибо за заказ ❤️</h2>
-                <button class="btn" onclick="location.reload()">
-                    Вернуться в меню
-                </button>
-            </div>
+    <!-- THANK YOU -->
+    <div id="thanks" class="screen center">
+        <div class="card">
+            <h2>Спасибо за заказ ❤️</h2>
+            <button class="btn" onclick="resetApp()">Вернуться в меню</button>
         </div>
     </div>
 
     <script>
 
-        /* ===== ВСТАВЬ СЮДА СВОИ ДАННЫЕ ===== */
-
         const BOT_TOKEN = "8582189278:AAGSjtqymoSAu3vr9Ep6ZDZ6qZ8x0FS94IY";
         const CHAT_ID = "230361002";
 
-        /* ================================= */
+        const products = [
+            { name: "Mini Burger", tr: "Mini Burger", price: 99000, img: "images/mini-burger.jpg" },
+            { name: "Tantuni", tr: "Tantuni", price: 120000, img: "images/tantuni.jpg" },
+            { name: "Hot Dog", tr: "Hot Dog", price: 99000, img: "images/hotdog.jpg" },
+            { name: "Izgara Köfte", tr: "Izgara Köfte", price: 65000, img: "images/kofte.jpg" },
+            { name: "Kaşarlı Köfte", tr: "Kaşarlı Köfte", price: 65000, img: "images/kasarli-kofte.jpg" },
+            { name: "Bonfile", tr: "Ekmek Arası Bonfile", price: 195000, img: "images/bonfile.jpg" },
+            { name: "Et Döner", tr: "Ekmek Arası Et Döner", price: 102000, img: "images/doner.jpg" }
+        ];
 
         let cart = {};
 
-        function showScreen(id) {
+        function goTo(id) {
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById(id).classList.add("active");
             window.scrollTo(0, 0);
         }
 
-        function changeQty(key, price, delta) {
+        function renderMenu() {
+            const box = document.getElementById("items");
+            box.innerHTML = "";
 
-            if (!cart[key]) {
-                cart[key] = { qty: 0, price: price };
-            }
+            products.forEach(p => {
+                cart[p.name] = cart[p.name] || { qty: 0, price: p.price };
 
-            cart[key].qty += delta;
+                box.innerHTML += `
+                <div class="item">
+                    <img src="${p.img}">
+                    <div class="info">
+                        <div class="name">${p.name}</div>
+                        <div class="tr">${p.tr}</div>
+                        <div class="price">${p.price} сум</div>
+                        <div class="qty">
+                            <button onclick="changeQty('${p.name}', -1)">−</button>
+                            <span>${cart[p.name].qty}</span>
+                            <button onclick="changeQty('${p.name}', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            });
 
-            if (cart[key].qty < 0) {
-                cart[key].qty = 0;
-            }
-
-            document.getElementById(key).innerText = cart[key].qty;
-            updateCartCount();
+            updateCount();
         }
 
-        function updateCartCount() {
-            let count = 0;
-            for (let k in cart) {
-                count += cart[k].qty;
-            }
-            document.getElementById("cartCount").innerText = count;
+        function changeQty(name, delta) {
+            cart[name].qty += delta;
+            if (cart[name].qty < 0) cart[name].qty = 0;
+            renderMenu();
         }
 
-        function openCart() {
-
-            let list = document.getElementById("cartList");
-            let total = 0;
-
-            list.innerHTML = "";
-
-            for (let k in cart) {
-                if (cart[k].qty > 0) {
-                    let sum = cart[k].qty * cart[k].price;
-                    total += sum;
-                    list.innerHTML +=
-                        <div class="cart-item">${k} × ${cart[k].qty}</div>;
-                }
-            }
-
-            document.getElementById("cartTotal").innerText =
-                "Итого: " + total + " сум";
-
-            showScreen("cart");
+        function updateCount() {
+            let c = 0;
+            for (let k in cart) c += cart[k].qty;
+            document.getElementById("cartCount").innerText = c;
         }
 
         function sendOrder() {
-
             let text = "🧒 Детский заказ OTTO\n\n";
+            let total = 0;
 
             for (let k in cart) {
                 if (cart[k].qty > 0) {
                     text += k + " x" + cart[k].qty + "\n";
+                    total += cart[k].qty * cart[k].price;
                 }
             }
+
+            text += "\nИтого: " + total + " сум";
 
             fetch("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage", {
                 method: "POST",
@@ -400,8 +257,14 @@
                 })
             });
 
-            showScreen("thanks");
+            goTo("thanks");
         }
+
+        function resetApp() {
+            location.reload();
+        }
+
+        renderMenu();
 
     </script>
 
