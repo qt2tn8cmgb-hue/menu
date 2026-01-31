@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTTO Çocuk Menü</title>
+    <title>OTTO | Детское меню</title>
 
     <style>
         body {
@@ -22,19 +22,39 @@
             display: block;
         }
 
-        .card {
-            background: #6f8f84;
-            color: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 30vh;
+        /* -------- START -------- */
+        .start {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        .start-card {
+            background: #6f8f84;
+            color: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            border: none;
+        }
+
+        /* -------- MENU -------- */
         .menu-item {
             background: #6f8f84;
-            color: #ffffff;
-            border-radius: 10px;
+            color: #fff;
+            border-radius: 14px;
             margin-bottom: 20px;
             overflow: hidden;
         }
@@ -49,161 +69,198 @@
             padding: 15px;
         }
 
+        .food-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .food-tr {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
         .qty {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         .qty button {
             width: 40px;
             height: 40px;
-            font-size: 20px;
-            border: none;
             border-radius: 50%;
-        }
-
-        .price {
-            font-weight: bold;
-        }
-
-        .send {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
             border: none;
-            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* -------- CART -------- */
+        .cart-item {
+            background: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 15px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- WELCOME SCREEN -->
-    <div id="welcome" class="screen active">
-        <div class="card">
-            <h1>OTTO</h1>
-            <p>Hoşgeldiniz</p>
-            <button onclick="goMenu()">
-                Çocuk Menüsüne Geç
-            </button>
+    <!-- ===== START SCREEN ===== -->
+    <div id="start" class="screen active start">
+        <div class="start-card">
+            <h1>Добро пожаловать в OTTO</h1>
+            <p>Детское меню</p>
+            <button class="btn" onclick="openMenu()">Перейти в меню</button>
         </div>
     </div>
 
-    <!-- MENU SCREEN -->
+    <!-- ===== MENU ===== -->
     <div id="menu" class="screen">
+        <h2>ДЕТСКОЕ МЕНЮ</h2>
 
-        <h2 style="text-align: center;">
-            ÇOCUK MENÜ
-        </h2>
-
-        <!-- ITEM 1 -->
+        <!-- MINI BURGER -->
         <div class="menu-item">
-            <img src="mini-burger.jpg" alt="Mini Burger">
+            <img src="images/mini-burger.jpg">
             <div class="content">
-                <h3>Mini Burger</h3>
-                <p class="price">99 000 сум</p>
+                <div class="food-name">Мини бургеры</div>
+                <div class="food-tr">Mini Burger</div>
+                <div>99 000 сум</div>
 
                 <div class="qty">
-                    <button onclick="changeQty('Mini Burger', 99000, -1)">−</button>
+                    <button onclick="change('Mini Burger', 99000, -1)">−</button>
                     <span id="Mini Burger">0</span>
-                    <button onclick="changeQty('Mini Burger', 99000, 1)">+</button>
+                    <button onclick="change('Mini Burger', 99000, 1)">+</button>
                 </div>
             </div>
         </div>
 
-        <!-- ITEM 2 -->
+        <!-- HOT DOG -->
         <div class="menu-item">
-            <img src="hotdog.jpg" alt="Hot Dog">
+            <img src="images/hotdog.jpg">
             <div class="content">
-                <h3>Hot Dog</h3>
-                <p class="price">99 000 сум</p>
+                <div class="food-name">Хот-дог</div>
+                <div class="food-tr">Hot Dog</div>
+                <div>99 000 сум</div>
 
                 <div class="qty">
-                    <button onclick="changeQty('Hot Dog', 99000, -1)">−</button>
+                    <button onclick="change('Hot Dog', 99000, -1)">−</button>
                     <span id="Hot Dog">0</span>
-                    <button onclick="changeQty('Hot Dog', 99000, 1)">+</button>
+                    <button onclick="change('Hot Dog', 99000, 1)">+</button>
                 </div>
             </div>
         </div>
 
-        <button class="send" onclick="sendOrder()">
-            Siparişi Gönder
-        </button>
+        <button class="btn" onclick="openCart()">🛒 Корзина</button>
+    </div>
 
+    <!-- ===== CART ===== -->
+    <div id="cart" class="screen">
+        <h2>Корзина</h2>
+
+        <div id="cartList"></div>
+        <div class="total" id="cartTotal"></div><button class="btn" onclick="sendOrder()">Заказать</button>
+        <button class="btn" onclick="backToMenu()">Вернуться в меню</button>
+    </div>
+
+    <!-- ===== THANK YOU ===== -->
+    <div id="thanks" class="screen start">
+        <div class="start-card">
+            <h2>Спасибо за заказ ❤️</h2>
+            <p>Мы уже готовим его</p>
+            <button class="btn" onclick="resetApp()">Вернуться в меню</button>
+        </div>
     </div>
 
     <script>
         let cart = {};
 
-        function goMenu() {
-            document.getElementById("welcome").classList.remove("active");
-            document.getElementById("menu").classList.add("active");
+        function openMenu() {
+            start.classList.remove("active");
+            menu.classList.add("active");
         }
 
-        function changeQty(name, price, delta) {
+        function change(name, price, delta) {
             if (!cart[name]) {
-                cart[name] = {
-                    qty: 0,
-                    price: price
-                };
+                cart[name] = { qty: 0, price: price };
             }
 
             cart[name].qty += delta;
-
-            if (cart[name].qty < 0) {
-                cart[name].qty = 0;
-            }
+            if (cart[name].qty < 0) cart[name].qty = 0;
 
             document.getElementById(name).innerText = cart[name].qty;
         }
 
-        function sendOrder() {
-            let text = "🧒 ÇOCUK MENÜ SİPARİŞİ\n\n";
-            let total = 0;
-            let empty = true;
+        function openCart() {
+            let list = document.getElementById("cartList");
+            let totalBox = document.getElementById("cartTotal");
 
-            for (let item in cart) {if (cart[item].qty > 0) {
-                    empty = false;
+            list.innerHTML = "";
+            let total = 0;
+
+            for (let item in cart) {
+                if (cart[item].qty > 0) {
+                    let sum = cart[item].qty * cart[item].price;
+                    total += sum;
+
+                    list.innerHTML += `
+                    <div class="cart-item">
+                        ${item} × ${cart[item].qty} — ${sum} сум
+                    </div>
+                `;
+                }
+            }
+
+            totalBox.innerText = "Итого: " + total + " сум";
+
+            menu.classList.remove("active");
+            cart.classList.add("active");
+        }
+
+        function backToMenu() {
+            cart.classList.remove("active");
+            menu.classList.add("active");
+        }
+
+        function sendOrder() {
+            let text = "🧒 Детский заказ OTTO\n\n";
+            let total = 0;
+
+            for (let item in cart) {
+                if (cart[item].qty > 0) {
                     text += "• " + item + " x" + cart[item].qty + "\n";
                     total += cart[item].qty * cart[item].price;
                 }
             }
 
-            if (empty) {
-                alert("Sepet boş");
-                return;
-            }
+            text += "\nИтого: " + total + " сум";
 
-            text += "\nToplam: " + total + " сум";
-
-            const TOKEN = "8582189278:AAGSjtqymoSAu3vr9Ep6ZDZ6qZ8x0FS94IY";
-            const CHAT_ID = "230361002";
-
-            fetch(
-                "https://api.telegram.org/bot" + TOKEN + "/sendMessage",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: text
-                    })
-                }
-            )
-            .then(() => {
-                alert("Sipariş gönderildi!");
-            })
-            .catch(() => {
-                alert("Hata oluştu");
+            fetch("https://api.telegram.org/botBOT_8582189278:AAGSjtqymoSAu3vr9Ep6ZDZ6qZ8x0FS94IY/sendMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: "230361002",
+                    text: text
+                })
             });
+
+            cart = {};
+            cart.classList.remove("active");
+            thanks.classList.add("active");
+        }
+
+        function resetApp() {
+            location.reload();
         }
     </script>
 
 </body>
+
 </html>
