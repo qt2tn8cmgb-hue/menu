@@ -1,152 +1,209 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÇOCUK MENÜ | Детское меню</title>
+    <title>OTTO Çocuk Menü</title>
 
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #efe6dc;
-            color: #2e2e2e;
         }
 
-        .container {
-            padding: 15px;
+        .screen {
+            display: none;
+            padding: 20px;
         }
 
-        h1 {
+        .active {
+            display: block;
+        }
+
+        .card {
+            background: #6f8f84;
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            font-size: 22px;
-            letter-spacing: 2px;
-            margin: 20px 0 30px;
+            margin-top: 30vh;
         }
 
         .menu-item {
             background: #6f8f84;
-            border-radius: 8px;
+            color: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 20px;
             overflow: hidden;
-            margin-bottom: 25px;
         }
 
         .menu-item img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
         }
 
-        .menu-content {
+        .content {
             padding: 15px;
-            color: #ffffff;
         }
 
-        .menu-content h2 {
-            margin: 0;
-            font-size: 18px;
-            text-transform: uppercase;
+        .qty {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
         }
 
-        .menu-content h3 {
-            margin: 6px 0 10px;
-            font-size: 14px;
-            font-weight: normal;
-            opacity: 0.85;
-        }
-
-        .menu-content p {
-            margin: 0 0 12px;
-            font-size: 14px;
-            line-height: 1.4;
+        .qty button {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50%;
         }
 
         .price {
+            font-weight: bold;
+        }
+
+        .send {
+            width: 100%;
+            padding: 15px;
             font-size: 16px;
             font-weight: bold;
-            text-align: right;
+            border-radius: 8px;
+            border: none;
+            margin-top: 20px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>ÇOCUK MENÜ<br>ДЕТСКОЕ МЕНЮ</h1>
+    <!-- WELCOME SCREEN -->
+    <div id="welcome" class="screen active">
+        <div class="card">
+            <h1>OTTO</h1>
+            <p>Hoşgeldiniz</p>
+            <button onclick="goMenu()">
+                Çocuk Menüsüne Geç
+            </button>
+        </div>
+    </div>
 
+    <!-- MENU SCREEN -->
+    <div id="menu" class="screen">
+
+        <h2 style="text-align: center;">
+            ÇOCUK MENÜ
+        </h2>
+
+        <!-- ITEM 1 -->
         <div class="menu-item">
-            <img src="images/mini-burger.jpg">
-            <div class="menu-content">
-                <h2>MINI BURGER</h2>
-                <h3>Мини бургеры</h3>
-                <p>Мини бургеры с мясом, куриным филе и картофелем фри</p>
-                <div class="price">99 000 сум</div>
+            <img src="mini-burger.jpg" alt="Mini Burger">
+            <div class="content">
+                <h3>Mini Burger</h3>
+                <p class="price">99 000 сум</p>
+
+                <div class="qty">
+                    <button onclick="changeQty('Mini Burger', 99000, -1)">−</button>
+                    <span id="Mini Burger">0</span>
+                    <button onclick="changeQty('Mini Burger', 99000, 1)">+</button>
+                </div>
             </div>
         </div>
 
+        <!-- ITEM 2 -->
         <div class="menu-item">
-            <img src="images/tantuni.jpg">
-            <div class="menu-content">
-                <h2>TANTUNI</h2>
-                <h3>Булочка с телятиной</h3>
-                <p>Сыр Чеддер и картофель фри</p>
-                <div class="price">120 000 сум</div>
+            <img src="hotdog.jpg" alt="Hot Dog">
+            <div class="content">
+                <h3>Hot Dog</h3>
+                <p class="price">99 000 сум</p>
+
+                <div class="qty">
+                    <button onclick="changeQty('Hot Dog', 99000, -1)">−</button>
+                    <span id="Hot Dog">0</span>
+                    <button onclick="changeQty('Hot Dog', 99000, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <div class="menu-item">
-            <img src="images/hotdog.jpg">
-            <div class="menu-content">
-                <h2>HOT DOG</h2>
-                <h3>Хот-дог</h3>
-                <p>Классический детский хот-дог</p>
-                <div class="price">99 000 сум</div>
-            </div>
-        </div>
-
-        <div class="menu-item">
-            <img src="images/kofte.jpg">
-            <div class="menu-content">
-                <h2>IZGARA KÖFTE</h2>
-                <h3>Мясные котлеты</h3>
-                <p>С картофелем фри</p>
-                <div class="price">65 000 сум</div>
-            </div>
-        </div>
-
-        <div class="menu-item">
-            <img src="images/kasarli-kofte.jpg">
-            <div class="menu-content">
-                <h2>KAŞARLI KÖFTE</h2>
-                <h3>Сырные котлеты</h3>
-                <p>С картофелем фри</p>
-                <div class="price">65 000 сум</div>
-            </div>
-        </div>
-
-        <div class="menu-item">
-            <img src="images/bonfile.jpg">
-            <div class="menu-content">
-                <h2>BONFİLE</h2>
-                <h3>Булочка с бонфиле</h3>
-                <p>Сыр Чеддер и картофель фри</p>
-                <div class="price">195 000 сум</div>
-            </div>
-        </div>
-
-        <div class="menu-item">
-            <img src="images/doner.jpg">
-            <div class="menu-content">
-                <h2>ET DÖNER</h2>
-                <h3>Булочка с донером</h3>
-                <p>С картофелем фри</p>
-                <div class="price">102 000 сум</div>
-            </div>
-        </div>
+        <button class="send" onclick="sendOrder()">
+            Siparişi Gönder
+        </button>
 
     </div>
 
-</body>
+    <script>
+        let cart = {};
 
+        function goMenu() {
+            document.getElementById("welcome").classList.remove("active");
+            document.getElementById("menu").classList.add("active");
+        }
+
+        function changeQty(name, price, delta) {
+            if (!cart[name]) {
+                cart[name] = {
+                    qty: 0,
+                    price: price
+                };
+            }
+
+            cart[name].qty += delta;
+
+            if (cart[name].qty < 0) {
+                cart[name].qty = 0;
+            }
+
+            document.getElementById(name).innerText = cart[name].qty;
+        }
+
+        function sendOrder() {
+            let text = "🧒 ÇOCUK MENÜ SİPARİŞİ\n\n";
+            let total = 0;
+            let empty = true;
+
+            for (let item in cart) {if (cart[item].qty > 0) {
+                    empty = false;
+                    text += "• " + item + " x" + cart[item].qty + "\n";
+                    total += cart[item].qty * cart[item].price;
+                }
+            }
+
+            if (empty) {
+                alert("Sepet boş");
+                return;
+            }
+
+            text += "\nToplam: " + total + " сум";
+
+            const TOKEN = "8582189278:AAGSjtqymoSAu3vr9Ep6ZDZ6qZ8x0FS94IY";
+            const CHAT_ID = "230361002";
+
+            fetch(
+                "https://api.telegram.org/bot" + TOKEN + "/sendMessage",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text
+                    })
+                }
+            )
+            .then(() => {
+                alert("Sipariş gönderildi!");
+            })
+            .catch(() => {
+                alert("Hata oluştu");
+            });
+        }
+    </script>
+
+</body>
 </html>
