@@ -2,6 +2,7 @@
 <html lang="ru">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTTO | Çocuk Menü</title>
@@ -14,8 +15,13 @@
         }
 
         .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
             display: none;
-            min-height: 100vh;
             padding: 16px;
         }
 
@@ -34,21 +40,20 @@
             color: #fff;
             padding: 32px;
             border-radius: 20px;
-            text-align: center;
             width: 100%;
             max-width: 360px;
+            text-align: center;
         }
 
         .btn {
             width: 100%;
             padding: 14px;
-            margin-top: 14px;
+            margin-top: 12px;
             border: none;
             border-radius: 14px;
             font-size: 16px;
             font-weight: bold;
             background: #d4a373;
-            color: #000;
         }
 
         .cart-bar {
@@ -59,15 +64,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
             font-weight: bold;
+            margin-bottom: 16px;
         }
 
         .badge {
             background: red;
             padding: 4px 10px;
             border-radius: 50%;
-            font-size: 14px;
         }
 
         .item {
@@ -75,7 +79,6 @@
             border-radius: 16px;
             margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .item img {
@@ -86,20 +89,6 @@
 
         .info {
             padding: 12px;
-        }
-
-        .name {
-            font-weight: bold;
-        }
-
-        .tr {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .price {
-            font-weight: bold;
-            margin-top: 4px;
         }
 
         .qty {
@@ -123,12 +112,6 @@
             border-radius: 12px;
             margin-bottom: 10px;
         }
-
-        .total {
-            font-weight: bold;
-            margin: 16px 0;
-            text-align: right;
-        }
     </style>
 </head>
 
@@ -139,30 +122,34 @@
         <div class="card">
             <h1>OTTO</h1>
             <p>Çocuk Menü</p>
-            <button class="btn" onclick="goTo('menu')">Перейти в меню</button>
+            <button class="btn" onclick="showScreen('menu')">
+                Перейти в меню
+            </button>
         </div>
     </div>
 
     <!-- MENU -->
     <div id="menu" class="screen">
 
-        <div class="cart-bar" onclick="goTo('cart')">
+        <div class="cart-bar" onclick="openCart()">
             🛒 Корзина
             <span id="cartCount" class="badge">0</span>
         </div>
 
-        <!-- ITEMS -->
-        <div id="items"></div>
+        <div id="menuItems"></div>
 
     </div>
 
     <!-- CART -->
     <div id="cart" class="screen">
+
         <h3>Корзина</h3>
+
         <div id="cartList"></div>
-        <div class="total" id="cartTotal"></div>
+
         <button class="btn" onclick="sendOrder()">Заказать</button>
-        <button class="btn" onclick="goTo('menu')">Назад</button>
+        <button class="btn" onclick="showScreen('menu')">Назад</button>
+
     </div>
 
     <!-- THANK YOU -->
@@ -179,74 +166,83 @@
         const CHAT_ID = "230361002";
 
         const products = [
-            { name: "Mini Burger", tr: "Mini Burger", price: 99000, img: "images/mini-burger.jpg" },
-            { name: "Tantuni", tr: "Tantuni", price: 120000, img: "images/tantuni.jpg" },
-            { name: "Hot Dog", tr: "Hot Dog", price: 99000, img: "images/hotdog.jpg" },
-            { name: "Izgara Köfte", tr: "Izgara Köfte", price: 65000, img: "images/kofte.jpg" },
-            { name: "Kaşarlı Köfte", tr: "Kaşarlı Köfte", price: 65000, img: "images/kasarli-kofte.jpg" },
-            { name: "Bonfile", tr: "Ekmek Arası Bonfile", price: 195000, img: "images/bonfile.jpg" },
-            { name: "Et Döner", tr: "Ekmek Arası Et Döner", price: 102000, img: "images/doner.jpg" }
+            { id: "Mini Burger", price: 99000, img: "images/mini-burger.jpg" },
+            { id: "Tantuni", price: 120000, img: "images/tantuni.jpg" },
+            { id: "Hot Dog", price: 99000, img: "images/hotdog.jpg" },
+            { id: "Izgara Köfte", price: 65000, img: "images/kofte.jpg" },
+            { id: "Kaşarlı Köfte", price: 65000, img: "images/kasarli-kofte.jpg" },
+            { id: "Bonfile", price: 195000, img: "images/bonfile.jpg" },
+            { id: "Et Döner", price: 102000, img: "images/doner.jpg" }
         ];
 
         let cart = {};
 
-        function goTo(id) {
+        function showScreen(id) {
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById(id).classList.add("active");
-            window.scrollTo(0, 0);
         }
 
         function renderMenu() {
-            const box = document.getElementById("items");
-            box.innerHTML = "";
-
+            let html = "";
             products.forEach(p => {
-                cart[p.name] = cart[p.name] || { qty: 0, price: p.price };
-
-                box.innerHTML += `
-                <div class="item">
-                    <img src="${p.img}">
-                    <div class="info">
-                        <div class="name">${p.name}</div>
-                        <div class="tr">${p.tr}</div>
-                        <div class="price">${p.price} сум</div>
-                        <div class="qty">
-                            <button onclick="changeQty('${p.name}', -1)">−</button>
-                            <span>${cart[p.name].qty}</span>
-                            <button onclick="changeQty('${p.name}', 1)">+</button>
-                        </div>
+                cart[p.id] = cart[p.id] || 0;
+                html += `
+            <div class="item">
+                <img src="${p.img}">
+                <div class="info">
+                    <b>${p.id}</b>
+                    <div>${p.price} сум</div>
+                    <div class="qty">
+                        <button onclick="changeQty('${p.id}',-1)">−</button>
+                        <span>${cart[p.id]}</span>
+                        <button onclick="changeQty('${p.id}',1)">+</button>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
             });
-
-            updateCount();
+            menuItems.innerHTML = html; updateCount();
         }
 
-        function changeQty(name, delta) {
-            cart[name].qty += delta;
-            if (cart[name].qty < 0) cart[name].qty = 0;
+        function changeQty(id, delta) {
+            cart[id] += delta;
+            if (cart[id] < 0) cart[id] = 0;
             renderMenu();
         }
 
         function updateCount() {
             let c = 0;
-            for (let k in cart) c += cart[k].qty;
-            document.getElementById("cartCount").innerText = c;
+            for (let k in cart) c += cart[k];
+            cartCount.innerText = c;
+        }
+
+        function openCart() {
+            let html = "";
+            let total = 0;
+            for (let k in cart) {
+                if (cart[k] > 0) {
+                    total += cart[k];
+                    html += `
+                <div class="cart-item">
+                    ${k}
+                    <div class="qty">
+                        <button onclick="changeQty('${k}',-1)">−</button>
+                        <span>${cart[k]}</span>
+                        <button onclick="changeQty('${k}',1)">+</button>
+                    </div>
+                </div>
+            `;
+                }
+            }
+            cartList.innerHTML = html;
+            showScreen("cart");
         }
 
         function sendOrder() {
             let text = "🧒 Детский заказ OTTO\n\n";
-            let total = 0;
-
             for (let k in cart) {
-                if (cart[k].qty > 0) {
-                    text += k + " x" + cart[k].qty + "\n";
-                    total += cart[k].qty * cart[k].price;
-                }
+                if (cart[k] > 0) text += k + " x" + cart[k] + "\n";
             }
-
-            text += "\nИтого: " + total + " сум";
 
             fetch("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage", {
                 method: "POST",
@@ -257,7 +253,7 @@
                 })
             });
 
-            goTo("thanks");
+            showScreen("thanks");
         }
 
         function resetApp() {
